@@ -7,8 +7,8 @@
 //
 
 #import "OBCAppDelegate.h"
-
 #import "OCFWebServer.h"
+#import "Postgres.h"
 
 @interface OBCAppDelegate ()
 @property (nonatomic, strong) OCFWebServer *server;
@@ -27,13 +27,30 @@
                           processBlock:^void(OCFWebServerRequest *request,
                                              OCFWebServerResponseBlock respondWith) {
                               
-                              // Create your response and pass it to respondWith(...)
-                              respondWith([OCFWebServerDataResponse responseWithHTML:@"Hello World"]);
                               
+                              
+                              // TESTING
+                              // Create String representation of Query
+                              NSString *dictRepresentation = @"";
+                              for (NSString *key in request.query.allKeys) {
+                                  dictRepresentation = [dictRepresentation stringByAppendingFormat:@"%@:%@  ", key, request.query[key]];
+                              }
+                              
+                              // Create JSON representation of Query
+                              NSData *jsonData = [NSJSONSerialization dataWithJSONObject:request.query options:NSJSONWritingPrettyPrinted error:nil];
+                              NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                              
+                              
+                              
+                              // Create your response and pass it to respondWith(...)
+                              respondWith([OCFWebServerDataResponse responseWithHTML:json]);
                           }];
     
+    
+    
+    
     // Run the server on port 8080
-    [self.server startWithPort:8080 bonjourName:nil];
+    [self.server startWithPort:6969 bonjourName:nil];
     
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     NSString *serverURLString = [NSString stringWithFormat:@"http://127.0.0.1:%lu", self.server.port];
