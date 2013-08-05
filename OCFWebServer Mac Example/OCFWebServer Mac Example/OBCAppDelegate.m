@@ -22,32 +22,25 @@
     
     // Add a request handler for every possible GET request
     
-    [self.server addDefaultHandlerForMethod:@"GET"
-                          requestClass:[OCFWebServerRequest class]
-                          processBlock:^void(OCFWebServerRequest *request,
-                                             OCFWebServerResponseBlock respondWith) {
-                              
-                              
-                              
-                              // TESTING
-                              // Create String representation of Query
-                              NSString *dictRepresentation = @"";
-                              for (NSString *key in request.query.allKeys) {
-                                  dictRepresentation = [dictRepresentation stringByAppendingFormat:@"%@:%@  ", key, request.query[key]];
-                              }
-                              
-                              // Create JSON representation of Query
-                              NSData *jsonData = [NSJSONSerialization dataWithJSONObject:request.query options:NSJSONWritingPrettyPrinted error:nil];
-                              NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                              
-                              
-                              
-                              // Create your response and pass it to respondWith(...)
-                              respondWith([OCFWebServerDataResponse responseWithHTML:json]);
-                          }];
-    
-    
-    
+    [self.server addDefaultHandlerForMethod:@"GET" requestClass:[OCFWebServerRequest class] processBlock:^void(OCFWebServerRequest *request,OCFWebServerResponseBlock respondWith) {
+        
+        // TESTING
+        // Create String representation of Query
+        NSString *dictRepresentation = @"";
+        for (NSString *key in request.query.allKeys) {
+            dictRepresentation = [dictRepresentation stringByAppendingFormat:@"%@:%@  ", key, request.query[key]];
+        }
+        
+        // Create JSON representation of Query
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:request.query options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        
+        
+        // Create your response and pass it to respondWith(...)
+        respondWith([OCFWebServerDataResponse responseWithHTML:json]);
+        
+    }];
     
     // Run the server on port 8080
     [self.server startWithPort:6969 bonjourName:nil];
