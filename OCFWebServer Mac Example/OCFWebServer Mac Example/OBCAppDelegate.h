@@ -10,6 +10,9 @@
 
 @interface OBCAppDelegate : NSObject <NSApplicationDelegate>
 
+typedef void (^QuerySuccess) (NSArray *queryRows);
+typedef void (^QueryFailure) ();
+
 @property (assign) IBOutlet NSWindow *window;
 
 @end

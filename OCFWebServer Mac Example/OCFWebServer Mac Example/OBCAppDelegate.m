@@ -10,6 +10,12 @@
 #import "OCFWebServer.h"
 #import "Postgres.h"
 
+#define DB_NAME @""
+#define DB_SERVER @""
+#define DB_USER @""
+#define DB_PASS @""
+#define DB_PORT 5432
+
 @interface OBCAppDelegate ()
 @property (nonatomic, strong) OCFWebServer *server;
 @end
@@ -22,28 +28,28 @@
     
     // Add a request handler for every possible GET request
     
-    /*
+    __weak typeof(self) weakSelf = self;
+    
     [self.server addDefaultHandlerForMethod:@"GET" requestClass:[OCFWebServerRequest class] processBlock:^void(OCFWebServerRequest *request,OCFWebServerResponseBlock respondWith) {
+        // Make Query
+        __block NSArray *results;
+        [weakSelf queryForObject:nil parameters:request.query table:@"test" orderBy:@"id" success:^(NSArray *rows){
+            results = rows;
+        } failure:^{
+            respondWith([OCFWebServerDataResponse responseWithHTML:@"Error."]);
+        }];
         
-        // TESTING
-        // Create String representation of Query
-        NSString *dictRepresentation = @"";
-        for (NSString *key in request.query.allKeys) {
-            dictRepresentation = [dictRepresentation stringByAppendingFormat:@"%@:%@  ", key, request.query[key]];
-        }
-        
-        // Create JSON representation of Query
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:request.query options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        
-        
+        // Create JSON response
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:results options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         
         // Create your response and pass it to respondWith(...)
-        respondWith([OCFWebServerDataResponse responseWithHTML:json]);
+        respondWith([OCFWebServerDataResponse responseWithHTML:jsonString]);
         
     }];
-    */
     
+    
+    /*
     // TESTING VARIOUS REQUESTS
     [self.server addHandlerForMethod:@"GET"
                            path:@"/"
@@ -73,7 +79,7 @@
                        
                        respondWith([OCFWebServerDataResponse responseWithHTML:html]);
                    }];
-    
+    */
     
     // Run the server on port 8080
     [self.server startWithPort:6969 bonjourName:nil];
@@ -84,8 +90,39 @@
     [workspace openURL:URL];
 }
 
--(NSString *)postgresQueryFromParameters:(NSDictionary *)params {
-    return @"";
+-(void)queryForObject:(id)object parameters:(NSDictionary *)params table:(NSString *)table orderBy:(NSString *)order success:(QuerySuccess)success failure:(QueryFailure)failure {
+    // Create DB
+    PostgresDB *db = [[PostgresDB alloc] initWithServerName:DB_SERVER dbName:DB_NAME port:DB_PORT];
+    
+    // Try Query
+    @try {
+        // Connect
+        [db connectToDBwithUser:DB_USER password:DB_PASS];
+        
+        // Make Query
+        PostgresQuery *query = [[PostgresQuery alloc] initWithDatabase:db];
+        query.sql = [PostgresQueryString queryStringWithObject:object parameters:params table:table orderBy:order];
+        [query execQuery];
+        
+        // Handle Query
+        NSMutableArray *rows = [NSMutableArray array];
+        NSArray *propArray = [PostgresQueryString propertiesOfObject:object];
+        for (int xx = 0; xx < query.recordCount; xx++) {
+            NSMutableDictionary *rowDict = [NSMutableDictionary dictionary];
+            for (int yy = 0; yy < propArray.count; yy++) {
+                [rowDict setObject:[query stringValFromRow:xx Column:yy] forKey:propArray[yy]];
+            }
+            [rows addObject:rowDict];
+        }
+        
+        // Success Block
+        success(rows);
+    }
+    @catch (PostgresError *error) {
+        [error alertBox];
+        failure();
+    }
 }
+
 
 @end

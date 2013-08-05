@@ -13,6 +13,7 @@
 		AB4D0CA717AD5B52008CCA21 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = AB4D0CA517AD5B52008CCA21 /* Credits.rtf */; };
 		AB4D0CAA17AD5B52008CCA21 /* OBCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4D0CA917AD5B52008CCA21 /* OBCAppDelegate.m */; };
 		AB4D0CAD17AD5B52008CCA21 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB4D0CAB17AD5B52008CCA21 /* MainMenu.xib */; };
+		C083140817AF439900645006 /* PostgresQueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = C083140717AF439900645006 /* PostgresQueryString.m */; };
 		C0EE6F8A17AF1BBF00C97F0B /* PostgresDB.m in Sources */ = {isa = PBXBuildFile; fileRef = C0EE6F8817AF1BBF00C97F0B /* PostgresDB.m */; };
 		C0EE6F8E17AF1C9100C97F0B /* PostgresError.m in Sources */ = {isa = PBXBuildFile; fileRef = C0EE6F8C17AF1C9100C97F0B /* PostgresError.m */; };
 		C0EE6F9617AF1DC400C97F0B /* PostgresQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = C0EE6F9417AF1DC400C97F0B /* PostgresQuery.m */; };
@@ -38,6 +39,8 @@
 		AB4D0CA817AD5B52008CCA21 /* OBCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OBCAppDelegate.h; sourceTree = "<group>"; };
 		AB4D0CA917AD5B52008CCA21 /* OBCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OBCAppDelegate.m; sourceTree = "<group>"; };
 		AB4D0CAC17AD5B52008CCA21 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		C083140617AF439900645006 /* PostgresQueryString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostgresQueryString.h; sourceTree = "<group>"; };
+		C083140717AF439900645006 /* PostgresQueryString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostgresQueryString.m; sourceTree = "<group>"; };
 		C0EE6F8717AF1BBF00C97F0B /* PostgresDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = PostgresDB.h; sourceTree = "<group>"; };
 		C0EE6F8817AF1BBF00C97F0B /* PostgresDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostgresDB.m; sourceTree = "<group>"; };
 		C0EE6F8B17AF1C9100C97F0B /* PostgresError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = PostgresError.h; sourceTree = "<group>"; };
@@ -163,6 +166,8 @@
 				C0EE6F9717AF1F5A00C97F0B /* PostgresAsyncQuery.h */,
 				C0EE6F9817AF1F5A00C97F0B /* PostgresAsyncQuery.m */,
 				C0EE6F9B17AF201900C97F0B /* Postgres.h */,
+				C083140617AF439900645006 /* PostgresQueryString.h */,
+				C083140717AF439900645006 /* PostgresQueryString.m */,
 			);
 			name = PostgreSQL;
 			sourceTree = "<group>";
@@ -242,6 +247,7 @@
 				C0EE6FBD17AF259A00C97F0B /* OCFWebServerConnection.m in Sources */,
 				C0EE6FC017AF259A00C97F0B /* OCFWebServerRequest.m in Sources */,
 				C0EE6FC217AF259A00C97F0B /* OCFWebServerResponse.m in Sources */,
+				C083140817AF439900645006 /* PostgresQueryString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
