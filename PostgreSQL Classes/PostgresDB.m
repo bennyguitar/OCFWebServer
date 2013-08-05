@@ -29,18 +29,9 @@
 - (instancetype)initWithServerName:(NSString*) sName dbName:(NSString*)dbName port:(NSInteger)prt {
     self = [super init];
     if (self) {
-        if(sName)
-            serverName = sName;
-        else
-            serverName = @"localhost";
-        if(dbName)
-            databaseName = dbName;
-        else
-            databaseName = @"postgres";
-        if(prt > 0)
-            port = prt;
-        else
-            port = 5432;//default value
+        serverName = sName ? sName : @"localhost";
+        databaseName = dbName ? dbName : @"postgres";
+        port = prt > 0 ? prt : 5432;
     }
     return self;
 }
@@ -86,18 +77,17 @@
 
 
 #pragma mark - Dealloc
--(void) dealloc
-{
+-(void) dealloc {
     @synchronized(self) {
-        if(headerPG)
+        if(headerPG) {
             PQfinish(headerPG); // free allocated memory - libpq
+        }
     }
 }
 
 
 #pragma mark - IsBusy
-- (BOOL)isBusy
-{
+- (BOOL)isBusy {
     return PQisBusy(headerPG);
 }
 
