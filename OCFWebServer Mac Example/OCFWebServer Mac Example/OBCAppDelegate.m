@@ -22,6 +22,7 @@
     
     // Add a request handler for every possible GET request
     
+    /*
     [self.server addDefaultHandlerForMethod:@"GET" requestClass:[OCFWebServerRequest class] processBlock:^void(OCFWebServerRequest *request,OCFWebServerResponseBlock respondWith) {
         
         // TESTING
@@ -41,6 +42,38 @@
         respondWith([OCFWebServerDataResponse responseWithHTML:json]);
         
     }];
+    */
+    
+    // TESTING VARIOUS REQUESTS
+    [self.server addHandlerForMethod:@"GET"
+                           path:@"/"
+                   requestClass:[OCFWebServerRequest class]
+                   processBlock:^void(OCFWebServerRequest* request,
+                                      OCFWebServerResponseBlock respondWith) {
+                       
+                       NSString* html = @"<html><body> \
+                       <form name=\"input\" action=\"/\" \
+                       method=\"post\" enctype=\"application/x-www-form-urlencoded\"> \
+                       Value: <input type=\"text\" name=\"value\"> \
+                       <input type=\"submit\" value=\"Submit\"> \
+                       </form> \
+                       </body></html>";
+                       
+                       respondWith([OCFWebServerDataResponse responseWithHTML:html]);
+                   }];
+    
+    [self.server addHandlerForMethod:@"POST"
+                           path:@"/"
+                   requestClass:[OCFWebServerURLEncodedFormRequest class]
+                   processBlock:^void(OCFWebServerRequest* request,
+                                      OCFWebServerResponseBlock respondWith) {
+                       
+                       NSString *value = [(OCFWebServerURLEncodedFormRequest*)request arguments][@"value"];
+                       NSString* html = [NSString stringWithFormat:@"<p>%@</p>", value];
+                       
+                       respondWith([OCFWebServerDataResponse responseWithHTML:html]);
+                   }];
+    
     
     // Run the server on port 8080
     [self.server startWithPort:6969 bonjourName:nil];
@@ -49,6 +82,10 @@
     NSString *serverURLString = [NSString stringWithFormat:@"http://127.0.0.1:%lu", self.server.port];
     NSURL *URL = [NSURL URLWithString:serverURLString];
     [workspace openURL:URL];
+}
+
+-(NSString *)postgresQueryFromParameters:(NSDictionary *)params {
+    return @"";
 }
 
 @end
