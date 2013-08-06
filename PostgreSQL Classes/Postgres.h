@@ -15,5 +15,6 @@
 #import "PostgresError.h"
 #import "PostgresAsyncQuery.h"
 #import "PostgresQuery.h"
+#import "PostgresQueryString.h"
 
 #endif
